@@ -25,10 +25,13 @@ Nous les avons choisies principalement parce qu’elles étaient découpées en 
 En cas d’imprévus nous avons heureusement choisi un sujet bien connu pour lequel beaucoup de données sont accessibles.
 
 * **Quels moyens de communications avez vous mis en place (email, tracking github, slack...) ? **
+
 Nous avons créé un serveur discord, plateforme sur laquelle nous sommes quotidiennement connectés.
 
 * **Quelles sessions de travail avez vous prévu hors du cours d’ici à la soutenance de janvier ? **
+
 Nous avons prévu une séance toutes les semaines bien que croiser nos 4 emplois du temps en cette période soit complexe.
 
 * **Quels rôles avez vous identifiés au sein du groupe (design, développement D3, pré-traitement des données, suivi, etc.) ? Ces rôles ne sont pas exclusifs, et il est attendu que tout le monde contribue à la conception et au code des visualisations. Nous utilisons les fonctions de suivi de projet de github pour évaluer en partie la contribution de chacun au projet. **
+
 Nous avons choisi de travailler jusqu’à présent en complète coopération bien que des profils soient déjà apparus (Hedwin : développement D3 ; Louis : design ; Seyedeh Niloufar : développement D3 ; Guillaume : pré-traitement des données). Évidemment, il est encore trop tôt pour parler de véritables rôles attitrés. 
