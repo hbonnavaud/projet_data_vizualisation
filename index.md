@@ -1,5 +1,5 @@
 
-## Projet data vizualisation - Groupe 17
+## Projet data vizualisation - Groupe 13
 #### Impacte de la pandémie de coronavirus sur la polution atmosphérique
 
 ### Quel est le problème abordé ?
