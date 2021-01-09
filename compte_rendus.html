@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Dataviz - Compte rendu</title>
+
+    <link href="assets/css/base.css" rel="stylesheet">
+
+    <!-- Bootstrap - CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+<!-- header -->
+<main class="mb-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent" style="background: transparent">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav m-auto w-75 d-flex justify-content-around">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dataviz.html">Data-visualization</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="compte_rendus.html">Compte rendu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="evolution.html">Project-evolution</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="peer_review.html">Peer-review</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- header content -->
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1>Compte rendu</h1>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Body -->
+<div class="container marketing">
+    <div class="row"><h1 class="m-4">Cadrage du projet</h1>
+        <div class="my-4 col-lg-10 col-md-10" style="margin:auto">
+            <h5>Quel est le problème abordé / à quel besoin répondez vous ?</h5>
+
+            <p>Nous souhaitons mettre en avant l’impact des mesures sanitaires (suite à la pandémie de COVID-19) sur les
+                émissions de CO2. Ce que nous souhaitons donc mettre en avant sont les mécanismes réalisables ou non
+                actuellement pour réduire notre impact environnemental.</p>
+
+            <h5>À qui s’adresse la visualisation, quelles tâches seront effectuées au travers de votre projet ?</h5>
+
+            <p>Le public principal de notre projet est le profil classique du travailleur/consommateur en 2020.
+                Tâches que l’on peut effectuer :</p>
+            <ul>
+                <li>Identifier les périodes de confinement de chaque pays sur la frise chrono (et donc l’impact du pays sur
+                    le taux de CO2 mondial),</li>
+                <li>Comparer l’état du graphe à la même période X années auparavant pour comparer l’impact en question avec
+                    des données de la même période détailler les mesures prises dans chaque pays (déplacements interdits / imports
+                    limités / etc …).
+                    Nous considérons que ces trois axes permettrons à l’utilisateur de
+                    développer une vision globale de l’émission de CO2 dans le monde, ainsi que les mesures qui pourraient
+                    être prises pour limiter l’impact écologique de l’humanité.</li>
+            </ul>
+
+
+            <h5>Sources de données choisies</h5>
+            <p>Les données que nous avons choisies proviennent de : https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html</p>
+
+            <p>Nous les avons choisies principalement parce qu’elles étaient découpées en semaines ce qui est intéressant à
+                la vue de l’échelle de temps qui nous intéresse. De plus les données étaient relativement à jour.
+                Nous envisageons de croiser nos données avec d’autres datasets mais nous n’en avons pas encore trouvé que
+                nous soyons sûrs d’utiliser.</p>
+
+            <p>En cas d’imprévus nous avons heureusement choisi un sujet bien connu pour lequel beaucoup de données sont
+                accessibles.</p>
+
+            <h5>Quels moyens de communications avez vous mis en place (email, tracking github, slack...) ?</h5>
+            <p>Nous avons créé un serveur discord, plateforme sur laquelle nous sommes quotidiennement connectés.</p>
+
+            <h5>Quelles sessions de travail avez vous prévu hors du cours d’ici à la soutenance de janvier ?</h5>
+            <p>Nous avons prévu une séance toutes les semaines bien que croiser nos 4 emplois du temps en cette période soit
+                complexe.</p>
+
+            <h5>Quels rôles avez vous identifiés au sein du groupe (design, développement D3, pré-traitement des données,
+                suivi, etc.) ? </h5>
+            <p>Ces rôles ne sont pas exclusifs, et il est attendu que tout le monde contribue à la conception et au code
+                des visualisations. Nous utilisons les fonctions de suivi de projet de github pour évaluer en partie la
+                contribution de chacun au projet.</p>
+            <p>Nous avons choisi de travailler jusqu’à présent en complète coopération bien que des profils soient déjà
+                apparus </p>
+            <li>
+                <ul>Guillaume : pré-traitement des données</ul>
+                <ul>Hedwin : développement D3</ul>
+                <ul>Seyedeh Niloufar : développement D3</ul>
+                <ul>Louis : design</ul>
+            </li>
+
+            <p>Évidemment, il est encore trop tôt pour parler de véritables rôles attitrés.</p>
+        </div>
+    </div>
+</div>
+
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+
+<!-- Bootstrap - JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</body>
+</html>

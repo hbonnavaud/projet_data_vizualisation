@@ -1,0 +1,47 @@
+* {
+    font-weight: 300 !important;
+}
+
+main.gradient-bg {
+    background: rgb(174,238,237);
+    background: radial-gradient(circle, rgba(174,238,237,1) 0%, rgba(108,172,255,1) 100%);
+}
+
+.lead.text-muted > a {
+    color: #6c757d!important;
+}
+
+.lead.text-muted > a:hover {
+    color: #2F3337!important;
+    transition: 0.5s;
+}
+
+h2.tabulation {
+    position: relative;
+    margin-left: 3rem;
+}
+
+h2.tabulation::before {
+    background: #212529!important;
+    content: "";
+    position: absolute;
+    top: 6%;
+    bottom: 6%;
+    left: -1%;
+    width: 2px;
+}
+
+a {
+    color: inherit !important;
+}
+
+.graph-hint {
+    color: #888;
+}
+
+.nav-link {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400 !important;
+    line-height: 1.5;
+}
