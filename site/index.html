@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Data visualization project{% endblock %}</title>
+
+    <link href="assets/css/base.css" rel="stylesheet">
+
+    <!-- Bootstrap - CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <style>
+        .subtitle_section {
+            width: fit-content;
+            margin: auto;
+            font-weight: 400 !important;
+            position: relative;
+        }
+
+        .subtitle_section::before {
+            position: absolute;
+            content: "";
+            height: 2px;
+            width: 100px;
+            left: -120px;
+            top: 50%;
+            background: #6c757d;
+        }
+
+        .subtitle_section::after {
+            position: absolute;
+            content: "";
+            height: 2px;
+            width: 100px;
+            left: 120px;
+            top: 50%;
+            background: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+<!-- header -->
+<main class="gradient-bg" style="height: 100vh">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent" style="background: transparent">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav m-auto w-75 d-flex justify-content-around">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dataviz.html">Data-visualization</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="compte_rendus.html">Compte rendu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="evolution.html">Project-evolution</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="peer_review.html">Peer-review</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- header content -->
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h1 style="margin-bottom: 2rem">Impacte de la COVID-19 sur les émissions de carbon</h1>
+                <p class="lead text-muted">Un projet de data-visualisation</p>
+                <p class="lead text-muted subtitle_section">Réalisé par</p>
+                <p class="lead text-muted" style="margin-bottom: 0">ORTEGA Guillaume - BONNAVAUD Hedwin</p>
+                <p class="lead text-muted">LEFEVRE Louis - ANSARI Niloufar</p>
+                <p class="lead text-muted subtitle_section">Encadré par</p>
+                <p class="lead text-muted"><a href="https://tabard.fr/">TABARD Aurélien</a></p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+
+<!-- Bootstrap - JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</body>
+</html>
