@@ -1,12 +1,6 @@
 
 DEFAULT_COUNTRY_COLOR = "#DDD"
 
-/** Initialisation du Tooltip */
-var tooltip = d3
-    .select("#map_container")
-    .append("div")
-    .attr("class", "hidden mytooltip");
-
 /** Initialisation du SVG */
 var width = "100%",
     height = 700;
@@ -176,13 +170,16 @@ function drawMap() {
         .enter()
         .append("path")
         .attr("fill", function (d) {
-            let color = getFillColorFor(d, dataVisualizationDate);
-            return color;
+            return getFillColorFor(d, dataVisualizationDate);
         })
         .attr("style", function (d) {
             return "stroke:" + getStrokeColorFor(d, dataVisualizationDate);
         })
         .attr("stroke-width", "2px")
+        .on("mousemove", (event, d) => {
+            showTooltip(d, event);
+        })
+        .on("mouseout", function() {hideTooltip();})
         .attr("d", path); // on cree la forme du département
 }
 
@@ -199,8 +196,7 @@ function componentToHex(c) {
 }
 
 function rgbToHex(r, g, b) {
-    let res = "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-    return res;
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 function getFillColorFor(d, date) {
@@ -323,6 +319,7 @@ function getFillColor(co2_rate, covid_rate) {
     return rgbToHex(R,G,B);
 }
 
+
 function getCountryColor(co2_rate, covid_rate) {
     let R, G, B; // to 100
     let clair; // to 255
@@ -348,6 +345,7 @@ function getCountryColor(co2_rate, covid_rate) {
     return rgbToHex(R,G,B);
 }
 
+
 function dateToString(date) {
     let day = date.getDate();
     if (date.getDate() < 10) {
@@ -358,4 +356,62 @@ function dateToString(date) {
         month = "0" + month;
     }
     return day + "/" + month + "/" + date.getFullYear();
+}
+
+// Tooltip functions
+
+var tooltip = d3.select(".mytooltip")
+
+function showTooltip(d, event) {
+
+    // On remplit les informations contenues dans le tooltip
+    /*
+        <div class="hidden mytooltip">
+            <div class="mx-2 mt-2" id="tooltip-country-name"></div>
+            <div class="d-flex justify-content-around">
+                <div class="m-2" id="tooltip-country-covid">Covid :</div>
+                <div class="m-2" id="tooltip-country-co2">CO2 : </div>
+            </div>
+            <div id="tooltip-graph">
+
+            </div>
+        </div>
+     */
+    let country_info = d.properties.map_color_information
+    if (country_info == undefined) {
+        return;
+    }
+    let best_date_information = getDateInformations(country_info, dataVisualizationDate);
+    d3.select("#tooltip-country-name").text(d.properties.name);
+    let covid_container = d3.select("#tooltip-country-covid");
+    covid_container.text("Covid : " + best_date_information.covid_level);
+    let co2_container = d3.select("#tooltip-country-co2");
+    co2_container.text("CO2 : " + best_date_information.co2_level);
+
+    tooltip.classed("hidden", false);
+    // On calcule la position du tooltip en fonction de la position de la sourie
+    var mousePosition = d3.pointer(event);
+    let left = 0;
+    if (mousePosition[0] < document.body.clientWidth / 2) {
+        left = mousePosition[0] + 40; // Affichage du tooltip à droite de la souris
+    } else {
+        left = mousePosition[0] - 10 - tooltip.node().getBoundingClientRect().width; // Affichage du tooltip à gauche de la souris
+    }
+    let top = mousePosition[1] - tooltip.node().getBoundingClientRect().height / 2;
+
+    // on affiche le toolip
+    tooltip
+        .classed("hidden", false)
+        // on positionne le tooltip en fonction
+        // de la position de la souris
+        .attr( "style", "left:" + left + "px; top:" + top + "px");
+
+}
+
+function drawTooltipGraph() {
+
+}
+
+function hideTooltip() {
+    tooltip.classed("hidden", true);
 }

@@ -8,13 +8,14 @@
     <title>Data visualization</title>
 
     <link href="assets/css/base.css" rel="stylesheet">
+    <link href="assets/css/dataviz_tooltip.css" rel="stylesheet">
 
     <!-- CSS - Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <!-- D3.js -->
-    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="jquery-3.5.1.min.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
 
@@ -61,10 +62,11 @@
 
 <!-- Body -->
 <div class="container marketing">
-    <div class="row">
+
+    <h3>Le monde le <h3 id="date"></h3></h3>
+    <input id="slider" type="range" value="1" min="0" max="63" step="1" />
+    <div class="row position-relative">
         <!-- Page content -->
-        <h3>Le monde le <h3 id="date"></h3></h3>
-        <input id="slider" type="range" value="1" min="0" max="63" step="1" />
         <div id="map_container" class="position-relative">
 
         </div>
@@ -73,13 +75,25 @@
             <div class='legend-title'>Carte cas Covid/CO2</div>
             <div class='legend-scale'>
                 <ul class='legend-labels'>
-                    <li><span style='background:#ff0000;'></span>Nombre cas covid</li>
-                    <li><span style='background:#808080;'></span>Taux de CO2</li>
+                    <li>
+                        <span style='background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,0,0,1) 100%);;'></span>
+                        Evolution de la COVID dans le pays</li>
+                    <li><span style='background: linear-gradient(90deg, rgba(200,200,200,1) 0%, rgba(100,100,100,1) 100%);'></span>
+                        Taux de CO2</li>
                 </ul>
             </div>
-            <div class='legend-source'>Source: <a href="# https://www.esrl.noaa.gov/gmd/ccgg/trends/data.htm"> https://www.esrl.noaa.gov/gmd/ccgg/trends/data.htm</a></div>
         </div>
 
+        <div class="hidden mytooltip">
+            <div class="mx-2 mt-2" id="tooltip-country-name"></div>
+            <div class="d-flex justify-content-around">
+                <div class="m-2" id="tooltip-country-covid">Covid :</div>
+                <div class="m-2" id="tooltip-country-co2">CO2 : </div>
+            </div>
+            <div id="tooltip-graph">
+
+            </div>
+        </div>
     </div>
 </div>
 
@@ -88,6 +102,7 @@
 
 <!-- Javascript -->
 <!-- Code pour ce TP -->
+<script src="jquery-3.5.1.min.js"></script>
 <script src="assets/js/dataviz1.js"></script>
 </body>
 </html>
