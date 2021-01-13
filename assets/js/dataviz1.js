@@ -21,8 +21,8 @@ var svg = d3
 svg.append("g");
 
 /** Chargement de la carte de la France */
-var startDate = new Date("2/1/2020");
-var dataVisualizationDate = new Date("2/1/2020");
+var startDate = new Date("1/22/2020");
+var dataVisualizationDate = new Date("1/22/2020");
 var projection = d3
     .geoConicConformal()
     .center([0.454071, 57.279229])
