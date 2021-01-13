@@ -392,7 +392,7 @@ function showTooltip(d, event) {
     // On calcule la position du tooltip en fonction de la position de la sourie
     var mousePosition = d3.pointer(event);
     let left = 0;
-    if (mousePosition[0] < document.body.clientWidth / 2) {
+    if (mousePosition[0] < d3.select("#map_container").node().getBoundingClientRect().width / 2) {
         left = mousePosition[0] + 40; // Affichage du tooltip à droite de la souris
     } else {
         left = mousePosition[0] - 10 - tooltip.node().getBoundingClientRect().width; // Affichage du tooltip à gauche de la souris
