@@ -205,7 +205,7 @@ function getFillColorFor(d, date) {
     if (data == null) {
         return DEFAULT_COUNTRY_COLOR;  // get default color
     }
-    let best_date_information = getDateInformations(data, date);
+    let best_date_information = getDateInformation(data, date);
 
     if (best_date_information == null) {
         return DEFAULT_COUNTRY_COLOR;  // get default color
@@ -223,7 +223,7 @@ function getStrokeColorFor(d, date) {
     if (data == null) {
         return "";  // get default color
     }
-    let best_date_information = getDateInformations(data, date);
+    let best_date_information = getDateInformation(data, date);
 
     if (best_date_information == null) {
         return "";  // get default color
@@ -259,7 +259,7 @@ function getColorGradient(value, min_color, max_color) {
     return result
 }
 
-function getDateInformations(informations, date, debug=false) {
+function getDateInformation(information, date, debug=false) {
     /**
      * OBSOLETE, UTILISE LORS DE LA COLORATION INITIALE -> Couleur selon le niveau de co2 et gradient selon le niveau de covid
      *
@@ -272,23 +272,23 @@ function getDateInformations(informations, date, debug=false) {
     }
     let best_date = null;
     let best_info = null;
-    Object.keys(informations.dates).forEach(current_date => {
+    Object.keys(information.dates).forEach(current_date => {
         if (debug) {
             console.log("test");
         }
         if (current_date == date) {
             // Si la date est exactement la date demandée, on la garde.
             best_date = current_date;
-            best_info = informations.dates[current_date];
+            best_info = information.dates[current_date];
         }
         if ((best_date == null || (new Date(best_date) < new Date(current_date) && new Date(current_date) < date))) {
             best_date = current_date;
-            best_info = informations.dates[current_date];
+            best_info = information.dates[current_date];
         }
     });
     if (debug) {
         console.log("best date found = " + best_date + " for informations = ");
-        console.log(informations);
+        console.log(information);
     }
     return best_info;
 }
@@ -381,7 +381,7 @@ function showTooltip(d, event) {
     if (country_info == undefined) {
         return;
     }
-    let best_date_information = getDateInformations(country_info, dataVisualizationDate);
+    let best_date_information = getDateInformation(country_info, dataVisualizationDate);
     d3.select("#tooltip-country-name").text(d.properties.name);
     let covid_container = d3.select("#tooltip-country-covid");
     covid_container.text("Covid : " + best_date_information.covid_level);
@@ -406,10 +406,91 @@ function showTooltip(d, event) {
         // de la position de la souris
         .attr( "style", "left:" + left + "px; top:" + top + "px");
 
+    drawTooltipGraph(d.properties.map_color_information);
+
 }
 
-function drawTooltipGraph() {
+function drawTooltipGraph(country_informations) {
+    // Empty graph
+    d3.select("#tooltip-graph").html("")
+    let dates = Object.keys(country_informations.dates)
+    // set the dimensions and margins of the graph
+    var margin = {top: 10, right: 10, bottom: 60, left: 40},
+        width_between_two_dates = 12,
+        width = width_between_two_dates * (dates.length + 1),
+        height = 500 - margin.top - margin.bottom; // on axis x
 
+    // append the svg object to the body of the page
+    var svg = d3.select("#tooltip-graph")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // X axis
+    var x = d3.scaleBand()
+        .range([ 0, width ])
+        .domain(dates.map(function(d) {
+            return dateToString(new Date(d));
+        }))
+        .padding(1);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+        .domain([country_informations.min_covid, country_informations.max_covid])
+        .range([ height, 0]);
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Lines
+    svg.selectAll("myline")
+        .data(dates)
+        .enter()
+        .append("line")
+        .attr("x1", function(d) {
+            let val = x(dateToString(new Date(d)));
+            return val;
+        })
+        .attr("x2", function(d) {
+            let val = x(dateToString(new Date(d)));
+            return val;
+        })
+        .attr("y1", function(d) {
+            let val = y(country_informations[d].covid_level);
+            return val;
+        })
+        .attr("y2", y(0))
+        .attr("stroke", "grey");
+
+    // Circles
+    svg.selectAll("mycircle")
+        .data(dates)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {
+            let val = x(dateToString(new Date(d)))
+            return val;
+        })
+        .attr("cy", function(d) {
+            let val = y(country_informations[d].covid_level);
+            return val;
+        })
+        .attr("r", function(d) {
+            let truncated_co2_value = (country_informations[d].co2_level - country_informations.min_co2)
+            let truncated_co2_max = (country_informations.max_co2 - country_informations.min_co2)
+            let co2_degree = truncated_co2_value / truncated_co2_max
+            return co2_degree * 10;
+        })
+        .style("fill", "#69b3a2")
+        .attr("stroke", "black");
 }
 
 function hideTooltip() {
