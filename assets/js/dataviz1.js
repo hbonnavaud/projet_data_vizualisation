@@ -464,7 +464,7 @@ function drawTooltipGraph(country_informations) {
             return val;
         })
         .attr("y1", function(d) {
-            let val = y(country_informations[d].covid_level);
+            let val = y(country_informations.dates[d].covid_level);
             return val;
         })
         .attr("y2", y(0))
@@ -480,11 +480,11 @@ function drawTooltipGraph(country_informations) {
             return val;
         })
         .attr("cy", function(d) {
-            let val = y(country_informations[d].covid_level);
+            let val = y(country_informations.dates[d].covid_level);
             return val;
         })
         .attr("r", function(d) {
-            let truncated_co2_value = (country_informations[d].co2_level - country_informations.min_co2)
+            let truncated_co2_value = (country_informations.dates[d].co2_level - country_informations.min_co2)
             let truncated_co2_max = (country_informations.max_co2 - country_informations.min_co2)
             let co2_degree = truncated_co2_value / truncated_co2_max
             return co2_degree * 10;
