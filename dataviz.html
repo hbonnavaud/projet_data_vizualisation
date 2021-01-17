@@ -29,21 +29,12 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav m-auto w-75 d-flex justify-content-around">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="dataviz.html">Data-visualization</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="compte_rendus.html">Compte rendu</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="evolution.html">Evolution</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="peer_review.html">Peer-review</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="dataviz.html">Data-visualization</a></li>
+                    <li class="nav-item"><a class="nav-link" href="document_cadrage.html">Document de cadrage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="peer_review.html">Peer review</a></li>
+                    <li class="nav-item"><a class="nav-link" href="evolution.html">Avancement</a></li>
+                    <li class="nav-item"><a class="nav-link" href="compte_rendu.html">Compte-rendu</a></li>
                 </ul>
             </div>
         </div>
@@ -64,9 +55,11 @@
 <div class="container marketing">
 
     <div class="d-flex justify-content-around" style="width: fit-content;">
-        <h3>Le monde le <h3 id="date" class="mx-2"></h3></h3>
+        <h3>Le monde le <h3 class="date mx-2"></h3></h3>
     </div>
     <input id="slider" type="range" value="1" min="0" max="63" step="1" />
+
+    <!-- Premiere Dataviz -->
     <div class="row position-relative m-2">
         <!-- Page content -->
         <div id="map_container" class="position-relative">
@@ -88,16 +81,59 @@
         <div class="hidden mytooltip">
             <h3 class="mx-2 mt-2" id="tooltip-country-name"></h3>
             <div class="d-flex justify-content-around">
+                <div class="m-2">Chiffres à la date <p class="date"></p></div>
                 <div class="m-2" id="tooltip-country-covid">Covid :</div>
                 <div class="m-2" id="tooltip-country-co2">CO2 : </div>
             </div>
+            <hr/>
             <div id="tooltip-graph">
 
             </div>
         </div>
     </div>
-    <p>Pour réaliser les graphiques de chaque pays (lorsqu'on passe la souris sur un pays) nous nous sommes fortement
-        inspirés du code fournis à l'adresse : https://www.d3-graph-gallery.com/graph/lollipop_basic.html</p>
+
+    <!-- Commentaires de la première dataviz -->
+    <p> Sur cette carte du monde, il est possible de faire varier le temps pour observer l'évolution de deux variables.
+        Pour chaque pays y est représenté, l'évolution de la production de CO2 par jour, ainsi que l'évolution du
+        nombre de cas de Covid 19.
+    </p>
+
+    <p> La coloration des pays dépend de leur production de CO2. Plus un pays est clair, moins il produit de CO2. Cette
+        coloration est calculée selon la production de ce même pays. Deux pays peuvent donc avoir la même coloration,
+        sans pour autant avoir la même production de CO2.
+    </p>
+    <div class="m-3 d-flex justify-content-between">
+        <img alt="lollipop graph exemple covid/co2" width="500px" src="assets/images/hover_graph_example.png"/>
+        <div class="d-flex flex-column justify-content-around m-2">
+            <p> Lorsque l'on passe la souris sur un pays, il est possible d'observer un graphique concernant ce pays uniquement.
+                Ce graphique représente l'évolution de la production de CO2 et de la COVID-19 dans le pays sélectionné.
+                Il permet de visualiser l'évolution de ces variables de manière plus précise.
+                Sur ce graphique, la hauteur des barres correspond au nombre de cas de la COVID-19 dans le pays, et le rayon
+                des cercle correspond au taux de CO2 émis <b>par rapport aux émissions de ce pays sur la durée de l'observation.</b>
+                Chacun de ces graphiques possèdent donc un cercle de rayon 10px, et un cercle de rayon 0px, qui correspondent
+                alors aux émissions maximales et minimales pour ce pays.
+            </p>
+            <p>
+                Cette fenêtre nous donne également des informations sur l'état du pays à la date sélectionnée. Si on ne
+                souhaite pas se fier à la coloration de la carte, nous pouvons observer le nombre de cas de la COVID dans
+                le pays, ainsi que les émissions de CO2.
+            </p>
+            <p>
+                Vous pouvez maintenant observer ces graphiques par vous même. En observant celui de la Chine, vous pourez
+                remarquer que lorsque le nombre de cas positifs de la COVID-19 cesse de croitre, la quantité de CO2
+                émise par le pays revient à la normale, mais ne décroît pas. Ce comportement nous amène à penser que les
+                données que nous avons en notre possessions indiques le nombre de cas cumulés depuis le début de l'épidémie.
+            </p>
+        </div>
+    </div>
+
+    <p> Ces graphiques nous permettent égallement de voir une baisse des émissions de CO2 à intervalles régulières,
+        avant la pandémie (ce comportement est plus net pour les pays européens et USA). Après observation, nous pouvons
+        remarquer que ces baisses surviennent les dimanches. Pour nous, cela a renforcé l'idée que les déplacements de
+        la population étaient directement liés aux émissions de CO2. Pour illustrer ce comportement,
+    </p>
+
+    <!-- Seconde Dataviz -->
 </div>
 
 <!-- Bootstrap -->
@@ -106,6 +142,6 @@
 <!-- Javascript -->
 <!-- Code pour ce TP -->
 <script src="jquery-3.5.1.min.js"></script>
-<script src="assets/js/dataviz1.js"></script>
+<script src="assets/js/dataviz_worldmap.js"></script>
 </body>
 </html>

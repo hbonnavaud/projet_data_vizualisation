@@ -179,14 +179,17 @@ function drawMap() {
         .on("mousemove", (event, d) => {
             showTooltip(d, event);
         })
-        .on("mouseout", function() {hideTooltip();})
+        .on("mouseout", function() {
+            hideTooltip();
+        })
         .attr("d", path); // on cree la forme du département
 }
 
 /** Affichage de la carte à la date en paramètre, la date doit être au format "JJ/MM/AAA" */
 function updateViz() {
     // Update date
-    document.getElementById("date").innerHTML = dateToString(dataVisualizationDate);
+    let dates = document.getElementsByClassName("date");
+    [].forEach.call(dates, (d)=>{d.innerHTML = dateToString(dataVisualizationDate);});
     drawMap();
 }
 
@@ -365,18 +368,6 @@ var tooltip = d3.select(".mytooltip")
 function showTooltip(d, event) {
 
     // On remplit les informations contenues dans le tooltip
-    /*
-        <div class="hidden mytooltip">
-            <div class="mx-2 mt-2" id="tooltip-country-name"></div>
-            <div class="d-flex justify-content-around">
-                <div class="m-2" id="tooltip-country-covid">Covid :</div>
-                <div class="m-2" id="tooltip-country-co2">CO2 : </div>
-            </div>
-            <div id="tooltip-graph">
-
-            </div>
-        </div>
-     */
     let country_info = d.properties.map_color_information
     if (country_info == undefined) {
         return;
@@ -445,10 +436,15 @@ function drawTooltipGraph(country_informations) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([country_informations.min_covid, country_informations.max_covid])
+        .domain([0, country_informations.max_covid])
         .range([ height, 0]);
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    if (country_informations) {
+
+        console.log("test");
+    }
 
     // Lines
     svg.selectAll("myline")
