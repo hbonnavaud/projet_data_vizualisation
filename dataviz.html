@@ -7,6 +7,8 @@
 
     <title>Data visualization</title>
 
+    <!-- Other CSS -->
+    <link href="assets/css/modal.css" rel="stylesheet">
     <link href="assets/css/base.css" rel="stylesheet">
     <link href="assets/css/dataviz_tooltip.css" rel="stylesheet">
 
@@ -65,7 +67,7 @@
         <div id="map_container" class="position-relative">
         </div>
 
-        <div class='my-legend' style="width: fit-content">
+        <div class='worldmap-legend my-legend' style="width: fit-content">
             <div class='legend-title' style="width: fit-content">Carte cas Covid/CO2</div>
             <div class='legend-scale'>
                 <ul class='legend-labels'>
@@ -121,8 +123,9 @@
             <p>
                 Vous pouvez maintenant observer ces graphiques par vous même. En observant celui de la Chine, vous pourez
                 remarquer que lorsque le nombre de cas positifs de la COVID-19 cesse de croitre, la quantité de CO2
-                émise par le pays revient à la normale, mais ne décroît pas. Ce comportement nous amène à penser que les
-                données que nous avons en notre possessions indiques le nombre de cas cumulés depuis le début de l'épidémie.
+                émise par le pays reviennent à la normale, mais les cas de COVID-19 ne décroîent pas.
+                Ce comportement nous amène à penser que les données sur la COVID-19 que nous avons en notre possessions
+                indiques le nombre de cas cumulés depuis le début de l'épidémie.
             </p>
         </div>
     </div>
@@ -130,10 +133,48 @@
     <p> Ces graphiques nous permettent égallement de voir une baisse des émissions de CO2 à intervalles régulières,
         avant la pandémie (ce comportement est plus net pour les pays européens et USA). Après observation, nous pouvons
         remarquer que ces baisses surviennent les dimanches. Pour nous, cela a renforcé l'idée que les déplacements de
-        la population étaient directement liés aux émissions de CO2. Pour illustrer ce comportement,
+        la population étaient directement liés aux émissions de CO2. Pour illustrer ce comportement, nous avons décidé
+        d'ajouter un nouveau graphique.
     </p>
 
     <!-- Seconde Dataviz -->
+    <h1>Bubble Chart</h1>
+
+    <h3>Le monde le <h3 id="date"></h3></h3>
+    <input id="bubble_chart_slider" type="range" value="1" min="0" max="289" step="1" />
+
+    <div id="bubble_chart_container" class="position-relative">
+
+        <div id="bubble"></div>
+        <div class='bubble-legend my-legend' style="width: fit-content">
+            <div class='legend-title' style="width: fit-content">Graphique en bulles</div>
+            <div class='legend-scale'>
+                <ul id="bubble_legend_content" class='legend-labels'>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <p>
+        Nous pouvons y observer les mêmes variables que dans le graphique précédent, à savoir l'évolution de la
+        production de CO2 (axe vertical) ainsi que l'évolution de la pandémie dans chacun des pays (axe horizontale).
+        Contrairement au graphique précédent, nous pouvons égallement observer l'importance des mouvements quotidiens
+        de la population dans ces pays.
+        Il est important de noter que ici, à la différence du dernier graphique, l'évolution du taux de CO2 produit par
+        chaque pays n'est pas représenté en fonction se sa production sur l'ensemble de l'observation, mais en fonction
+        de la production mondiale (c'est à dire que la hauteur d'une bulle dépend directement de sa production de CO2
+        réelle et non d'un ratio.
+        Nottons égallement que l'axe horizontale (nombre de cas positifs de la COVID-19) est dynamique.
+    </p>
+</div>
+
+<!-- Data loading modal -->
+<div id="loading_modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <p>Chargement des données en cours ... </p>
+        <p>Cette opération peut prendre près de 30 secondes ... </p>
+    </div>
 </div>
 
 <!-- Bootstrap -->
@@ -142,6 +183,7 @@
 <!-- Javascript -->
 <!-- Code pour ce TP -->
 <script src="jquery-3.5.1.min.js"></script>
-<script src="assets/js/dataviz_worldmap.js"></script>
+<script type="text/javascript" src="assets/js/dataviz_worldmap.js"></script>
+<script type="text/javascript" src="assets/js/datavizBubble.js"></script>
 </body>
 </html>

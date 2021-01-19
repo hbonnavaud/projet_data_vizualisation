@@ -4,20 +4,23 @@
  *
  */
 
+var loading_modal = document.getElementById("loading_modal");
 
+function showModal() {
+    loading_modal.style.display = "block";
+}
 
-
-
-
-
+function hideModal() {
+    loading_modal.style.display = "none";
+}
 
 // Défini les dimensions du SVD
 var margin = {top: 10, right: 20, bottom: 30, left: 50},
     width = 750 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
 
-//Création du SVG
-let svg = d3
+// Création du SVG
+var svg = d3
     .select("#bubble")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -25,12 +28,19 @@ let svg = d3
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var x_axis = svg.append("g")
+    .attr("transform", "translate(0," + height + ")");
+var y_axis = svg.append("g");
+var color = d3.scaleOrdinal()
+var graph = svg.append('g');
+
 /**Création de la date */
-var startDate = new Date("2/15/2020");
-var dataVisualizationDate = new Date("3/6/2020");
+var bubblesStartDate = new Date("2/15/2020");
+var bubblesDataVisualizationDate = bubblesStartDate;
 /** On ajoute un event listener sur le slider de changement de date */
-d3.select("#slider").on("input", function () {
-    dataVisualizationDate = incrementDate(startDate, this.value);
+d3.select("#bubble_chart_slider").on("input", function () {
+    console.log("incrementing date after selected value: " + this.value);
+    bubblesDataVisualizationDate = incrementDate(bubblesStartDate, this.value);
     drawVizu();
 });
 
@@ -42,8 +52,10 @@ let minCO2 = 0
 let maxCO2 = 0
 let minCovid = 0
 let maxCovid = 0
+
 //Lis les données
-d3.csv("assets/Data/MobilityData/Global_Mobility_Report.csv").then(function (data) {
+showModal();
+d3.csv("assets/Data/MobilityData/truncated_global_mobility_report.csv").then(function (data) {
     for (let i = 0; i < data.length; i++) {
         let information = data[i];
         let name = information.country_region;
@@ -103,26 +115,27 @@ d3.csv("assets/Data/MobilityData/Global_Mobility_Report.csv").then(function (dat
         mobility_data[name][date].mobility_level = mobility_info_total;
     }
 
-    d3.csv("assets/Data/CovidData/2019_nCoV_data.csv").then(function (data) {
+    d3.csv("assets/Data/CovidData/truncated_owid-covid-data.csv").then(function (data) {
         for (let i = 0; i < data.length; i++) {
             let information = data[i];
-            let name = information.Country;
-            let date = information.Date;
-            date = date.split(" ")[0];
-            date = new Date(date)
-            let covid_info = parseInt(information["Confirmed"]);
-            if (mobility_data[name] == null) {
-                //console.log("Mobility data not found for country " + name);
+            let name = information.location;
+            let date_parts = information.date.split("-");
+            let date = new Date(date_parts[1] + "/" + date_parts[2] + "/" + date_parts[0]);
+            let covid_info = parseInt(information.total_cases);
+            if (mobility_data[name] === undefined) {
+                console.log("Mobility data not found for country " + name);
                 continue;
             }
-            if (mobility_data[name][date] == null) {
-                //console.log("Mobility data not found for date " + date);
+            let res1 = mobility_data[name];
+            let res2 = mobility_data[name][date];
+            if (mobility_data[name][date] === undefined) {
+                console.log("Mobility data not found for date " + date);
                 continue;
             }
-            if (mobility_data[name][date].covid_level == null) {
+            if (mobility_data[name][date].covid_level === undefined) {
                 mobility_data[name][date].covid_level = 0;
             }
-            mobility_data[name][date].covid_level += parseInt(covid_info);
+            mobility_data[name][date].covid_level += covid_info;
             if (mobility_data[name][date].covid_level < minCovid) {
                 minCovid = mobility_data[name][date].covid_level
             } else if (mobility_data[name][date].covid_level > maxCovid) {
@@ -156,6 +169,38 @@ d3.csv("assets/Data/MobilityData/Global_Mobility_Report.csv").then(function (dat
                     }
                 }
             }
+
+            // On nettoie les données pour supprimer toutes les données qui ne contiennenet pas suffisement d'informations
+            // Pour pouvoir apparaître dans notre visualisation.
+            for (let i = 0; i < Object.keys(mobility_data).length; ++i) {
+                let country_name = Object.keys(mobility_data)[i];
+                for (let j = 0; j < Object.keys(mobility_data[country_name]).length; ++j) {
+                    let date = Object.keys(mobility_data[country_name])[j];
+
+                    if (mobility_data[country_name][date] === undefined
+                        || mobility_data[country_name][date].covid_level === undefined
+                        || mobility_data[country_name][date].co2_level === undefined
+                        || mobility_data[country_name][date].mobility_level === undefined) {
+                        delete mobility_data[country_name][date];
+                        --j;
+                    }
+                    if(Object.keys(mobility_data[country_name]).length === 0) {
+                        delete mobility_data[country_name];
+                        --i;
+                        break;
+                    }
+                }
+            }
+            // Mise à jour de la légende à partir de nos nouvelles données
+
+            color.domain(Object.keys(mobility_data)).range(d3.schemeSet3);
+
+            for(let country_name in mobility_data) {
+                let li = d3.select("#bubble_legend_content").append("li");
+                li.append("span").attr("style", "background: " + color(country_name) + ";");
+                li.append("p").text(country_name);
+            }
+            hideModal();
             drawVizu();
         });
     });
@@ -171,11 +216,11 @@ function DMYtoMDY(date) {
     return month + "/" + day + "/" + year;
 }
 
-'#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
-
 function incrementDate(date, days) {
     let day = 24 * 60 * 60 * 1000;
-    return new Date(date.getTime() + day * days);
+    let result = new Date(date.getTime() + day * days);
+    result.setHours(0);
+    return result;
 }
 
 function dateToString(date) {
@@ -191,71 +236,62 @@ function dateToString(date) {
 }
 
 function drawVizu() {
-    d3.select("svg").remove()
 
     //Affiche Date
-    document.getElementById("date").innerHTML = dateToString(dataVisualizationDate);
+    console.log("Drawing dataviz for date " + dateToString(bubblesDataVisualizationDate));
+    document.getElementById("date").innerHTML = dateToString(bubblesDataVisualizationDate);
 
     let current_max_covid = 0
     for (var name in mobility_data) {
-        if (mobility_data[name][dataVisualizationDate] === undefined
-            || mobility_data[name][dataVisualizationDate].covid_level === undefined
-            || mobility_data[name][dataVisualizationDate].co2_level === undefined
-            || mobility_data[name][dataVisualizationDate].mobility_level === undefined) {
-            continue;
-        }
-        if (mobility_data[name][dataVisualizationDate].covid_level > current_max_covid) {
-            current_max_covid = mobility_data[name][dataVisualizationDate].covid_level
+        if (mobility_data[name][bubblesDataVisualizationDate] !== undefined) {
+            if (mobility_data[name][bubblesDataVisualizationDate].covid_level > current_max_covid) {
+                current_max_covid = mobility_data[name][bubblesDataVisualizationDate].covid_level
+            }
         }
     }
+
     //Création du SVG
-    let svg = d3
-        .select("#bubble")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-    // Add X axis
+    // Axis
     var x = d3.scaleLinear().domain([minCovid, current_max_covid]).range([0, width]); // Axe X
-
-    svg
-        .append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
-
-    // Add Y axis
     var y = d3.scaleLinear().domain([minCO2, maxCO2]).range([height, 0]); // Axe Y
-    svg.append("g").call(d3.axisLeft(y));
+    var z = d3.scaleLinear().domain([minMob, maxMob]).range([1, 100]); // Taille des bulles
 
-    // Add a scale for bubble size
-    var z = d3.scaleLinear().domain([minCovid, maxMob]).range([1, 300]); // Taille des bulles
+    // Update axis
+    x_axis.call(d3.axisBottom(x));
+    y_axis.call(d3.axisLeft(y));
 
-    for (var name in mobility_data) {
-        if (mobility_data[name][dataVisualizationDate] === undefined
-            || mobility_data[name][dataVisualizationDate].mobility_level === undefined
-            || mobility_data[name][dataVisualizationDate].covid_level === undefined
-            || mobility_data[name][dataVisualizationDate].co2_level === undefined
-        ) {
-            console.log("Pas de data pour " + name + " le " + dataVisualizationDate)
-            continue;
-        }
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) + min);
-        }
-        svg
-            .append("g")
-            .selectAll("dot")
-            .data(Object.entries(mobility_data))
-            .enter()
-            .append("circle")
-            .attr("cx", x(mobility_data[name][dataVisualizationDate].covid_level))
-            .attr("cy", y(mobility_data[name][dataVisualizationDate].co2_level))
-            .attr("r", z(mobility_data[name][dataVisualizationDate].mobility_level))
-            .style("fill", '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6))
-            .style("opacity", "0.7")
-            .attr("stroke", "black")
-    }
+    // Add dots
+
+    // d3.select("svg").remove()
+    graph
+        .html("")
+        .selectAll("dot")
+        .data(Object.keys(mobility_data))
+        .enter()
+        .append("circle")
+        .attr("cx", function(d) {
+            if (mobility_data[d][bubblesDataVisualizationDate] === undefined) {
+                return 0;
+            }
+            let info = mobility_data[d][bubblesDataVisualizationDate];
+            let cov_lev = mobility_data[d][bubblesDataVisualizationDate].covid_level;
+            let x_val = x(mobility_data[d][bubblesDataVisualizationDate].covid_level);
+            return x(mobility_data[d][bubblesDataVisualizationDate].covid_level);
+        })
+        .attr("cy", function(d) {
+            if (mobility_data[d][bubblesDataVisualizationDate] === undefined) { return 0; }
+            return y(mobility_data[d][bubblesDataVisualizationDate].co2_level);
+        })
+        .attr("r", function(d) {
+            if (mobility_data[d][bubblesDataVisualizationDate] === undefined) { return 0; }
+            let mob = z(mobility_data[d][bubblesDataVisualizationDate].mobility_level);
+            return mob;
+        })
+        .style("fill", function (d) {
+            if (mobility_data[d][bubblesDataVisualizationDate] === undefined) { return 0; }
+            return color(d);
+        })
+        .style("opacity", "0.8")
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
 }
