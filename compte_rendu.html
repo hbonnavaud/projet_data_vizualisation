@@ -57,6 +57,82 @@
         </div>
     </div>
     <div class="row">
+        <h2 class="m-4">Choix des datasets</h2>
+
+        <p>Comme mentionné dans notre document de cadrage nous avions donc besoin de plusieurs datasets.</p>
+        <ul>
+            <li>Un concernant l’évolution du COVID dans chaque pays</li>
+            <li>Un concernant les émissions de CO2 dans chaque pays</li>
+        </ul>
+        <p>Cependant nous nous sommes rapidement heurtés à un premier problème : soit les données concernant les émissions de CO2 n’étaient pas propres à chaque pays, soit elles n’étaient pas à jour. Suite à un entretien avec Monsieur Tabard pour avoir des conseils sur la marche à suivre nous avons donc décidé d’intégrer un troisième élément à notre analyse qui était l’évolution de la mobilité dans chaque pays. Le dataset qu’il nous avait alors été conseillé était au choix celui fourni par Google disponible à cette adresse : <a href="https://www.google.com/covid19/mobility/">https://www.google.com/covid19/mobility/</a>. Ou alors le datasets fourni par Apple disponible à cette adresse : <a href="https://covid19.apple.com/mobility"> https://covid19.apple.com/mobility</a>.</p>
+        <p>Ces datasets présentaient approximativement les mêmes tendances, nous avons alors décidé d’utiliser celui qui nous semblait le plus facilement exploitable et lisible, ce fut celui fourni par Google.</p>
+        <p>Concernant le problème des datasets du CO2 nous avons finalement après de longues recherches pu trouver un dataset à jour cependant il ne couvrait que très peu de pays différents.</p>
+        <p>Dataset CO2 : <a href="https://carbonmonitor.org/">https://carbonmonitor.org/</a></p>
+        <p>Ne nous manquait que le dataset du COVID, dans un premier temps nous utilisions un dataset recoupant entièrement l’évolution du virus dans chaque pays jusqu’en Mars 2020 et ce depuis l’apparition du Virus en 2019. Plus récemment lorsque nos datavisualisation ont pu être terminées, nous avons décidé d’intégrer un datasets recoupant des données plus récentes.</p>
+        <p>Dataset COVID-19 ancien : <a href="https://www.kaggle.com/sudalairajkumar/novel-corona-virus-2019-dataset/version/9">https://www.kaggle.com/sudalairajkumar/novel-corona-virus-2019-dataset/version/9</a></p>
+        <p>Dataset COVID-19 nouveau : <a href="https://ourworldindata.org/coronavirus-data">https://ourworldindata.org/coronavirus-data</a></p>
+        <p>Lors de notre exploration de datasets nous avions aussi envisagé de récupérer les données des transports ferroviaires et aériens de chaque pays mais cela s’est avéré trop fastidieux.</p>
+    </div>
+    <div class="row">
+        <h2 class="m-4">Choix des visualisations</h2>
+        <p>Pour visualiser ces données nous avions comme objectif de faire observer à l’utilisateur une corrélation entre l’évolution de la pandémie dans chaque pays, ses émissions de CO2 et l’évolution de sa mobilité. Là où nous pensions donc afficher trois grandeurs et leurs évolutions nous avons donc réalisé que nous avions en réalité une quatrième grandeur à afficher : le nombre de pays.</p>
+        <p>Pour raisonner par l’absurde on peut donc se demander si un nuage de point ou une courbe “classique” aurait été suffisant. La réponse est donc “non” car la lisibilité d’un tel graphe aurait été désastreuse.</p>
+        <p>Notre choix s’est donc porté dans un premier temps sur une datavisualisation cartographiée. Le fait de représenter des données par pays nous a poussé dans cette direction. Initialement nous souhaitions afficher une couleur par pays, cette couleur aurait été plus ou moins sombre en fonction de l’émission de CO2 et du bleu au rouge en fonction de l’évolution du COVID. Finalement la lisibilité d’une telle représentation n’était pas non plus satisfaisante alors nous avons finalement colorisé chaque pays en une teinte de gris pour l’émission de CO2 et le contour de chacun de ces pays se teintait de rouge en fonction de l’évolution de la pandémie.</p>
+        <p>Cela permettait déjà de comparer à l'œil nu ces deux grandeurs, et donc dans le cas où elles auraient été inversement proportionnelles, on aurait pu voir assez évidemment le pays devenir plus clair au fur et à mesure que la bordure rouge apparaissait et s'intensifiait.</p>
+        <p>A cela nous avons ensuite voulu ajouter une seconde représentation intégrant la mobilité, jusqu’alors inexploitée.</p>
+        <p>Cette fois ci nous souhaitions mettre en évidence que la progression du virus au sein d’un pays pouvait grandement modifier la mobilité de ses habitants. Peut-être cette mobilité était-elle responsable des émissions de CO2 de ce pays mais cela restait à vérifier.</p>
+        <p>Cette fois ci donc trois grandeurs étaient au rendez-vous, après réflexion un bubble chart nous a semblé approprié du fait de sa capacité à montrer une grandeur par axe plus une autre grâce à la taille des bulles. Chaque bulle étant définie comme les grandeurs d’un pays.</p>
+        <p>Une fois cette visualisation terminée nous avons donc pensé à ajouter un graphe en “sucettes” sous forme de tooltip (info bulle) au passage de la souris sur les pays de la carte présentée à la première visualisation, cela nous permettait de préciser un peu plus les grandeurs en jeu qui étaient peu visibles avec nos dégradés de couleurs.</p>
+    </div>
+    <div class="row">
+        <h2 class="m-4">Difficultés rencontrées</h2>
+        <h5>Datasets</h5>
+        <p>Comme mentionné précédemment la toute première difficulté s’est faite ressentir sur le choix des datasets. A la fois les plages temporelles n’étaient pas satisfaisantes ou la localisation des données ne l’était pas.</p>
+        <p>Dans un second temps, une fois les datasets sélectionnés nous avons remarqué que les formats des données (noms des pays, syntaxe de la date) n’étaient pas nécessairement les mêmes pour tous les datasets.</p>
+        <p>Enfin les grandeurs en jeu n’étaient pas toujours transparentes et ont demandé un peu de travail de recherche sur le sujet pour pouvoir bien les interpréter.</p>
+        <p>Concernant le dataset de mobilité la taille de celui ci (250 MB) dépasse largement la limite de taille de fichier déposable sur GitHub (100 MB) nous avons donc dû le réduire à la main. Nous avons aussi dû sélectionner uniquement les données relatives au pays entier et non à la région du pays, ce qui a demandé de comprendre la structure des lignes du dataset.</p>
+        <h5>Carte</h5>
+        <p>Nous avions donc une fois de plus déjà mentionné ce problème auparavant mais la colorisation de la carte n’a pas été un problème trivial, il a fallu essayer plusieurs représentations avant de pouvoir choisir celle qui nous a semblée idéale.</p>
+        <p>De plus lors du changement de dataset (des données COVID) vers un plus à jour, nous avons eu un problème lié aux tooltip que nous aborderons juste après, mais qui nous a contraint de ne pas afficher des données sur un plage temporelle aussi grande que nous l’aurions voulu.</p>
+        <h5>Tooltip</h5>
+        <p>Le problème rencontré ici comme nous le disions concerne la plage temporelle choisie. Lors de nos anciennes implémentations nous étions extrêmement satisfait du résultat de cette datavisualisation. Cependant avec beaucoup plus de dates à afficher ce graphe en sucettes présent dans le tooltip s’est avéré inapproprié avec beaucoup plus de données. Nous avons donc décidé de conserver cette ancienne plage temporelle pour la carte et le tooltip et d’utiliser la nouvelle pour le bubble chart.</p>
+        <h5>Bubble Chart</h5>
+        <p>Cette visualisation est certainement celle qui a posé le moins de problèmes. Toutefois elle en avait un commun avec toutes les autres et qui me permet donc de le mentionner ici. En effet nous avons évidemment étés confrontés au fait que nos données étaient pour telle ou telle grandeur incomplètes ou manquantes. De ce fait, chaque fois qu’un pays manquait d’une de ces trois données nous avions décidé de ne pas l’intégrer à notre représentation, c’est pourquoi beaucoup de pays ne sont pas représentés soit sur le graphique à bulles, soit sur celui à sucette, soit sur notre carte du monde.</p>
+    </div>
+    <div class="row">
+        <h2 class="m-4">Réalisations et interprétations</h2>
+        <h5>Carte</h5>
+        <p>Lorsque l’on avance la date de notre carte on observe donc bel et bien une nette coloration rouge des bordures de la Chine, qui sera suivie par les autres pays concernés (Europe, Russie, USA, Brésil, Inde).</p>
+        <p>Lors de l’apparition de ces bordures l’intérieur du territoire s'éclaircit clairement et brutalement. On peut donc en conclure que les émissions de CO2 ont brutalement chutées à l’arrivée du virus dans le territoire.</p>
+        <h5>Tooltip</h5>
+        <p>Ce graphique nous permet de voir pour chaque jour, l’évolution du nombre de cas confirmés (bâton) et les émissions de CO2 (taille de la bulle). Si l’on prend l’exemple très parlant de la Chine, on observe lors de la progression du virus une diminution importante de la taille des bulles, puis lorsque le nombre de cas n’augmente plus, ces bulles reprennent une taille plus grande. Donc la Chine a bien diminué drastiquement ses émissions de CO2 durant sa lutte contre le COVID-19 pour ensuite reprendre un taux d’émissions habituel juste après.        </p>
+        <h5>Bubble Chart</h5>
+        <p>Sur ce graphique nous observons que l’emplacement et la taille de chaque bulle à la date de départ sont assez homogènes, ce sont les tailles de référence qui serviront à évaluer l’évolution de la mobilité par la suite.</p>
+        <p>Lorsque l’on passe vers la fin du mois d’Avril on observe que toutes les billes ont rétréci et (sauf pour les USA) se sont rapprochées de l’axe horizontal du graphique : les pays ont diminué leurs émissions de CO2 alors que sur cet axe nous observons une augmentation perpétuelle du nombre de cas COVID.</p>
+        <p>On observera tout au long de la visualisation que plusieurs profils se dégagent comme par exemple le Japon qui contrairement au Brésil ou à l’Inde maîtrise la propagation du virus dans son territoire.</p>
+        <p>La plupart des pays regagnent peu à peu en mobilité tout en ré-augmentant peu à peu leurs émissions de dioxyde de carbone.</p>
+        <p>Mention spéciale aux États-Unis qui malgré une propagation impressionnante du virus n’ont en rien modifié leur mobilité ou leurs émissions de CO2.</p>
+        <h5>Conclusion</h5>
+        <p>Ce que nous rapportent toutes ces datavisualisation est une corrélation systématique des émissions de CO2 avec la propagation du virus dans chaque pays. Nous observons aussi que la mobilité n’est pas directement responsable des émissions de CO2 ce qui nous emmène vers une autre conclusion : les émissions de CO2 ne sont pas simplement dues à la mobilité des habitants.</p>
+    </div>
+    <div class="row">
+        <h2 class="m-4">Critique</h2>
+        <h5>Carte</h5>
+        <p>Malheureusement tous les pays ne sont pas assez fournis en données, nous avons donc une carte seulement partiellement remplie.</p>
+        <p>De plus, la plage temporelle, comme nous le soulignons plus haut, est limitée à quelques mois.</p>
+        <p>La visualisation des grandeurs représentées n’est pas précise, on peut uniquement observer des évolutions, des tendances.</p>
+        <h5>Tooltip - Lollipop graph (sucettes)</h5>
+        <p>Il est difficile d’avoir une idée exacte de la taille de chaque bulle, là encore on observe surtout des variations plus que des grandeurs exactes.</p>
+        <p>Observons la manière de colorier les évolutions d’émission de CO2 (pour la couleur des pays et le rayon des cercles sur le lollipop-graph) et l’importance de la pandémie dans un pays (intensité de coloration en rouge des bordures des pays).</p>
+        <p>Dans la carte et ses tooltips, le gradient de ces couleurs dépend de l’ensemble des valeurs pour le pays en question, et non des valeurs brutes.</p>
+        <p>C’est à dire que si un pays A et un pays B ont tous deux atteint leur émission de CO2 maximale, ils auront tous deux une couleur très foncée et équivalente, alors que l’un des deux pays peut avoir des émissions de CO2 trois fois plus importantes que l’autre.</p>
+        <p>Cela offre l’avantage de mieux visualiser l'impact d’une variable sur l’autre, car si les couleurs étaient utilisées pour comparer les pays entre eux, elles ne changeraient quasiment pas, et c’est pour cette raison que nous avons choisi de les représenter ainsi.</p>
+        <p>Cependant, cette méthode peut également amener à une confusion chez l’observateur, car cette manière de colorier les pays (ou les bordures et les rayons des cercles dans les tooltips) n’est pas intuitive.</p>
+        <h5>Bubble Chart</h5>
+        <p>La taille des bulles est encore une fois compliquée à définir précisément, des variations et comparaisons sont facilement remarquables mais il nous faudrait peut-être un tooltip ici aussi pour savoir exactement quel pays fournit quelle donnée.</p>
+        <p>Les bulles se chevauchent ce qui nuit à la visibilité.</p>
+    </div>
+    <div class="row">
         <h2 class="m-4">Sources</h2>
         <div class="my-4 col-lg-10 col-md-10" style="margin:auto">
             <h5>Code</h5>
