@@ -7,23 +7,3 @@
     margin: auto;
     position: relative;
 }
-
-.subtitle_section::before {
-    position: absolute;
-    content: "";
-    height: 2px;
-    width: 100px;
-    left: -120px;
-    top: 50%;
-    background: #212529;
-}
-
-.subtitle_section::after {
-    position: absolute;
-    content: "";
-    height: 2px;
-    width: 100px;
-    left: 120px;
-    top: 50%;
-    background: #212529;
-}
