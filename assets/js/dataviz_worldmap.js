@@ -5,14 +5,14 @@ DEFAULT_COUNTRY_COLOR = "#DDD"
 var width = "100%",
     height = 700;
 
-var svg = d3
+var worldmap_svg = d3
     .select("#map_container")
     .append("svg")
     .attr("width", width)
     .attr("height", height);
 
 // On rajoute un groupe englobant toute la visualisation pour plus tard
-svg.append("g");
+worldmap_svg.append("g");
 
 /** Chargement de la carte de la France */
 var startDate = new Date("1/22/2020");
@@ -143,6 +143,10 @@ function incrementDate(date, days) {
 
 function drawMap() {
 
+    // On trie les données en fonction de leur pertinence. L'intérêt est que les pays dont on possède des informations
+    // se retrouvent à la fin, et qu'on les dessine en dernier.
+    // Si non, les pays dont on n'a pas d'informations seront dessiné par dessus les bordures de leur voisins,
+    // et on ne verra que la moitié de la bordure censé indiquer le niveau de covid dans le pays
     final_data.features.sort((elt1, elt2) => {
         if (elt1.properties.map_color_information == undefined) {
             return -1;
@@ -153,7 +157,7 @@ function drawMap() {
         }
     });
 
-    let carte = svg.selectAll("path").data(final_data.features);
+    let carte = worldmap_svg.selectAll("path").data(final_data.features);
 
     // code en cas de mise a jour de la carte / de changement de semaine
     carte
@@ -369,7 +373,7 @@ function showTooltip(d, event) {
 
     // On remplit les informations contenues dans le tooltip
     let country_info = d.properties.map_color_information
-    if (country_info == undefined) {
+    if (country_info === undefined) {
         return;
     }
     let best_date_information = getDateInformation(country_info, dataVisualizationDate);
@@ -441,27 +445,19 @@ function drawTooltipGraph(country_informations) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    if (country_informations) {
-
-        console.log("test");
-    }
-
     // Lines
     svg.selectAll("myline")
         .data(dates)
         .enter()
         .append("line")
         .attr("x1", function(d) {
-            let val = x(dateToString(new Date(d)));
-            return val;
+            return x(dateToString(new Date(d)));
         })
         .attr("x2", function(d) {
-            let val = x(dateToString(new Date(d)));
-            return val;
+            return x(dateToString(new Date(d)));
         })
         .attr("y1", function(d) {
-            let val = y(country_informations.dates[d].covid_level);
-            return val;
+            return y(country_informations.dates[d].covid_level);
         })
         .attr("y2", y(0))
         .attr("stroke", "grey");
