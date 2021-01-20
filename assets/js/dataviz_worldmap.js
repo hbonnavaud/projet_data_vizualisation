@@ -1,4 +1,16 @@
 
+
+
+/**
+ * *
+ * Dataviz réalisée par Hedwin BONNAVAUD - p1407846
+ * *
+ */
+
+
+
+
+
 DEFAULT_COUNTRY_COLOR = "#DDD"
 
 /** Initialisation du SVG */
@@ -416,13 +428,27 @@ function drawTooltipGraph(country_informations) {
         height = 500 - margin.top - margin.bottom; // on axis x
 
     // append the svg object to the body of the page
-    var svg = d3.select("#tooltip-graph")
+    var tooltip_svg = d3.select("#tooltip-graph")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+
+    tooltip_svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height - 6)
+        .text("Date");
+    tooltip_svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 6)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Nombre de cas positifs à la COVID-19 cumulés");
 
     // X axis
     var x = d3.scaleBand()
@@ -431,7 +457,7 @@ function drawTooltipGraph(country_informations) {
             return dateToString(new Date(d));
         }))
         .padding(1);
-    svg.append("g")
+    tooltip_svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x))
         .selectAll("text")
@@ -442,11 +468,11 @@ function drawTooltipGraph(country_informations) {
     var y = d3.scaleLinear()
         .domain([0, country_informations.max_covid])
         .range([ height, 0]);
-    svg.append("g")
+    tooltip_svg.append("g")
         .call(d3.axisLeft(y));
 
     // Lines
-    svg.selectAll("myline")
+    tooltip_svg.selectAll("myline")
         .data(dates)
         .enter()
         .append("line")
@@ -463,7 +489,7 @@ function drawTooltipGraph(country_informations) {
         .attr("stroke", "grey");
 
     // Circles
-    svg.selectAll("mycircle")
+    tooltip_svg.selectAll("mycircle")
         .data(dates)
         .enter()
         .append("circle")

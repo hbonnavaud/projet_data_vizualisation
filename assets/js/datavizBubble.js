@@ -1,8 +1,14 @@
-/************************************************************
- *
- * Cette visualisation a été réalisée par Guillaume ortega
- *
+
+
+
+/**
+ * *
+ * Dataviz réalisée par Guillaume ORTEGA - p1609841
+ * *
  */
+
+
+
 
 var loading_modal = document.getElementById("loading_modal");
 
@@ -30,7 +36,23 @@ var svg = d3
 
 var x_axis = svg.append("g")
     .attr("transform", "translate(0," + height + ")");
+// Ajout d'un label sur l'axe X
+svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("Nombre de cas positifs à la COVID-19 cumulés");
+
 var y_axis = svg.append("g");
+// Ajout d'un label sur l'axe Y
+svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Emissions de CO2 (en Mt)");
 var color = d3.scaleOrdinal()
 var graph = svg.append('g');
 
